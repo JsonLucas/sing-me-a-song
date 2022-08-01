@@ -11,13 +11,14 @@ async function insert(createRecommendationData: CreateRecommendationData) {
   if (existingRecommendation)
     throw conflictError("Recommendations names must be unique");
 
-  await recommendationRepository.create(createRecommendationData);
+  return await recommendationRepository.create(createRecommendationData);
 }
 
 async function upvote(id: number) {
   await getByIdOrFail(id);
 
   await recommendationRepository.updateScore(id, "increment");
+  return true;
 }
 
 async function downvote(id: number) {
@@ -30,7 +31,9 @@ async function downvote(id: number) {
 
   if (updatedRecommendation.score < -5) {
     await recommendationRepository.remove(id);
+    return 'exclusion';
   }
+  return 'decrement';
 }
 
 async function getByIdOrFail(id: number) {

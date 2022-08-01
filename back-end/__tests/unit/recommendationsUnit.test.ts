@@ -3,7 +3,7 @@ import { recommendationService } from '../../src/services/recommendationsService
 
 describe('recommendations tests', () => {
     beforeAll(async () => {
-        await prisma.$executeRaw`TRUNCATE recommendations;`;
+        await prisma.$executeRaw`TRUNCATE TABLE recommendations RESTART IDENTITY;`;
     });
     (async () => { // seed
         const body = { name:'recommendation', youtubeLink: 'https://www.youtube.com/watch?v=2NTyyCwwDfY' }
